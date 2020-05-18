@@ -12,6 +12,7 @@ const schema = new mongoose.Schema({
     enum: Object.values(ROLES),
     required: true
   }
+  // scheduleId ?
 });
 const User = mongoose.model("User", schema);
 

@@ -4,6 +4,8 @@ import request from "supertest";
 
 import mongoose from "mongoose";
 
+// TODO: move init/close logic to db module
+
 describe("Schools route - /schools", () => {
   let db;
 
