@@ -9,6 +9,4 @@ export default app => {
 
   app.use("/schools", fakeAuth, schoolsRoutes);
   app.use("/classes", fakeAuth, classesRoutes);
-
-  // maybe add students routes for 'get students of school/class' requirements
 };

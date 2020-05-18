@@ -7,10 +7,6 @@ import { allowedRoles } from "../middlewares/index.js";
 
 const router = express.Router();
 
-// function check(teacherId, classId) {
-// const classItem = await ClassModel.findById(classId);
-// }
-
 function processClass() {
   return async (req, res, next) => {
     const { id } = req.params;
@@ -30,13 +26,17 @@ function processClass() {
 function checkStudentExistence(id) {
   const student = UsersModel.findById(id);
 
-  debugger;
-
   return !!student;
 }
 
-router.get("/", allowedRoles(ROLES.TEACHER), (req, res) => {
-  // TODO: get all classes by teacherId
+router.get("/", allowedRoles(ROLES.TEACHER), async (req, res) => {
+  const teacherId = req.user._id;
+
+  const students = await ClassModel.find({
+    $or: [{ teacherId }, { teachers: { $in: [teacherId] } }]
+  }).populate("students");
+
+  res.send(students);
 });
 
 router.post("/", allowedRoles(ROLES.TEACHER), async (req, res) => {
@@ -63,7 +63,10 @@ router.get(
   allowedRoles(ROLES.TEACHER),
   processClass(),
   async (req, res) => {
-    // TODO: get students of class
+    const { id } = req.params;
+
+    const students = await ClassModel.findById(id).populate("students");
+    res.send(students);
   }
 );
 

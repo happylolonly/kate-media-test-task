@@ -53,6 +53,18 @@ router.post("/", allowedRoles(ROLES.PRINCIPAL), async (req, res) => {
 });
 
 router.get(
+  "/:id/students",
+  allowedRoles(ROLES.PRINCIPAL, ROLES.TEACHER),
+  processSchool(),
+  async (req, res) => {
+    const { id } = req.params;
+
+    // const students = await SchoolModel.findById(id).populate("classes");
+    // res.send(req.school.teachers);
+  }
+);
+
+router.get(
   "/:id/teachers",
   allowedRoles(ROLES.PRINCIPAL, ROLES.TEACHER),
   processSchool(),
@@ -125,6 +137,6 @@ router.delete(
   }
 );
 
-// maybe reuse teachers logic for assigning student's routes
+// or reuse teachers logic for assigning student's routes or create new routes
 
 export default router;
